@@ -12,6 +12,7 @@ class CardiacEchoEngine:
         module_paths = [
             "modules.segmentation.lv_segmentation",
             "modules.functional_analysis.lv_ef_prediction",
+            "modules.measurement.plax_hypertrophy_inference",
         ]
 
         for path in module_paths:

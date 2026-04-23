@@ -8,4 +8,7 @@ if __name__ == "__main__":
     # engine.run("lv_segmentation", save_video=True)
 
     #### 左心室 射血分数预测
-    engine.run("lv_ef_prediction")
+    # engine.run("lv_ef_prediction")
+
+    ### PLAX 心脏超声自动测量（LVPW、LVID、IVS）
+    engine.run("plax_inference", in_dir="a4c-video-dir/Videos", out_dir="output/plax_inference")
