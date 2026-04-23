@@ -1,0 +1,22 @@
+# docker-compose.yml - 完整服务栈
+version: '3.8'
+services:
+  echo-ai:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./models:/app/models
+      - ./data:/app/data
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+  
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+  
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: echo_db
