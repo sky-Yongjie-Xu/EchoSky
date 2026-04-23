@@ -498,5 +498,16 @@ def _video_collate_fn(x):
     return video, target, i
 
 
+def register():
+    """
+    模块注册接口：用于主引擎动态加载
+    你的主程序可以通过这个函数自动识别模块、调用run()
+    """
+    return {
+        "name": "lv_segmentation",
+        "entry": run,
+        "description": "左心室分割（训练/测试/推理/视频生成）"
+    }
+
 if __name__ == "__main__":
     run()
