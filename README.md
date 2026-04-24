@@ -12,6 +12,8 @@
 | **左心室分割** | 对左心室进行像素级分割，支持训练、测试和视频生成 | DeepLabV3+/FCN |
 | **射血分数预测** | 预测左心室射血分数（LVEF），支持多clip推理 | R(2+1)D-18 |
 | **报告生成** | 基于EchoPrime架构，自动生成结构化超声报告（支持中英文） | MViT-V2 + ConvNeXt |
+| **B模式线性测量** | 2D结构分割测量（IVS, LVID, LVPW, Aorta, LA, RV, PA, IVC） | DeepLabV3-ResNet50 |
+| **多普勒测量** | 多普勒超声峰值速度测量（AVVmax, TRVmax, MRVmax, LVOTVmax等） | DeepLabV3-ResNet50 |
 | **PLAX自动测量** | 在PLAX视角下自动测量LVPW、LVID、IVS等指标 | DeepLabV3-ResNet50 |
 | **疾病分类** | A4C视角下的淀粉样变性二分类 | R3D-18 |
 
@@ -41,12 +43,18 @@ EchoSky/
 │   │   ├── report_generation_echoprime.py
 │   │   └── utils.py
 │   ├── measurement/                 # 自动测量模块
-│   │   └── plax_hypertrophy_inference.py
+│   │   ├── b_mode_linear_measurement.py    # B模式2D结构测量
+│   │   ├── doppler_measurement.py          # 多普勒峰值速度测量
+│   │   ├── plax_hypertrophy_inference.py   # PLAX测量（待启用）
+│   │   └── utils.py
 │   ├── disease_classification/      # 疾病分类模块
-│   │   └── a4c_classification_inference.py
+│   │   └── a4c_classification_inference.py  # 淀粉样变分类（待启用）
 │   └── landmark_detection/          # 地标检测模块（待开发）
 ├── configs/
 │   └── train_config.yaml            # 训练配置文件
+├── weights/                         # 模型权重（需单独下载）
+│   ├── 2D_models/                   # B模式测量模型
+│   └── Doppler_models/              # 多普勒测量模型
 └── README.md
 ```
 
@@ -98,14 +106,20 @@ engine.run("view_classification_echoprime", dataset_dir="path/to/dicom/folder", 
 # 射血分数预测
 engine.run("lv_ef_prediction_dynamic")
 
+# B模式线性测量（支持IVS, LVID, LVPW, Aorta, LA, RV, PA, IVC）
+engine.run("b_mode_linear_measurement", model_weights="aorta", folders="path/to/videos", output_path_folders="output/measurement")
+
+# 多普勒峰值速度测量（支持AVVmax, TRVmax, MRVmax, LVOTVmax等）
+engine.run("doppler_measurement", model_weights="avvmax", folders="path/to/videos", output_path_folders="output/doppler")
+
 # 报告生成（支持中英文）
 engine.run("report_generation_echoprime", dataset_dir="path/to/dicom/folder")
 
-# PLAX自动测量
-engine.run("plax_inference", in_dir="path/to/videos", out_dir="output/plax")
+# PLAX自动测量（待启用）
+# engine.run("plax_inference", in_dir="path/to/videos", out_dir="output/plax")
 
-# 淀粉样变分类
-engine.run("a4c_classification", in_dir="path/to/videos", out_dir="output/a4c")
+# 淀粉样变分类（待启用）
+# engine.run("a4c_classification", in_dir="path/to/videos", out_dir="output/a4c")
 ```
 
 ## 📊 数据准备
@@ -195,7 +209,46 @@ training:
 - **支持语言**: 中文(zh) / 英文(en)
 - **报告章节**: 左心室、右心室、左心房、右心房、瓣膜等
 
-### 5. PLAX自动测量 (PLAX Measurement)
+### 5. B模式线性测量 (B-Mode Linear Measurement)
+
+- **输入**: 视频文件夹（.avi 或 .dcm 格式）
+- **输出**:
+  - 带标注的视频文件
+  - CSV文件（包含坐标和物理测量值）
+- **支持测量**:
+  - **IVS**: 室间隔厚度
+  - **LVID**: 左心室内径
+  - **LVPW**: 左室后壁厚度
+  - **Aorta**: 主动脉内径
+  - **Aortic Root**: 主动脉根部
+  - **LA**: 左心房内径
+  - **RV Base**: 右心室基底段
+  - **PA**: 肺动脉内径
+  - **IVC**: 下腔静脉内径
+- **使用示例**:
+  ```python
+  engine.run("b_mode_linear_measurement", model_weights="aorta", folders="path/to/videos", output_path_folders="output/measurement")
+  ```
+
+### 6. 多普勒测量 (Doppler Measurement)
+
+- **输入**: DICOM多普勒图像文件夹
+- **输出**:
+  - 标注峰值位置的图像
+  - CSV文件（包含峰值速度值）
+- **支持测量**:
+  - **AVVmax**: 主动脉瓣最大速度
+  - **TRVmax**: 三尖瓣反流最大速度
+  - **MRVmax**: 二尖瓣反流最大速度
+  - **LVOTVmax**: 左室流出道最大速度
+  - **LateVel**: 晚期充盈速度
+  - **MeDvel**: 平均舒张期速度
+- **使用示例**:
+  ```python
+  engine.run("doppler_measurement", model_weights="avvmax", folders="path/to/videos", output_path_folders="output/doppler")
+  ```
+
+### 7. PLAX自动测量 (PLAX Measurement) ⚠️ 待启用
 
 - **输入**: PLAX视角视频文件夹
 - **输出**:
@@ -204,7 +257,7 @@ training:
   - 测量曲线图
 - **测量指标**: LVPW（左室后壁厚度）、LVID（左室内径）、IVS（室间隔厚度）
 
-### 6. 疾病分类 (Disease Classification)
+### 8. 疾病分类 (Disease Classification) ⚠️ 待启用
 
 - **输入**: A4C视角视频文件夹
 - **输出**: CSV文件（包含每个视频的阳性置信度）
