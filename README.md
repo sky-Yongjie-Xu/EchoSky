@@ -32,13 +32,17 @@
 | 模块 | 功能描述 | 模型架构 |
 |------|----------|----------|
 | **肝脏疾病预测** | 基于超声图像预测肝脏疾病（肝硬化/脂肪肝） | DenseNet-121 |
-| **视觉问答** | 超声视频多选题评估（MedGemma 1.5） | MedGemma-1.5-4B |
 
 #### 第五阶段：报告生成
 | 模块 | 功能描述 | 模型架构 |
 |------|----------|----------|
 | **报告生成（EchoPrime）** | 基于EchoPrime架构，自动生成结构化超声报告（支持中英文） | MViT-V2 + ConvNeXt |
 | **报告生成（EchoGemma）** | 基于Gemma的超声智能报告生成 | Gemma |
+
+#### 第六阶段：智能问答（报告后处理）
+| 模块 | 功能描述 | 模型架构 |
+|------|----------|----------|
+| **视觉问答** | 基于生成的报告和图像进行多选题评估（MedGemma 1.5） | MedGemma-1.5-4B |
 
 #### 待启用功能
 | 模块 | 功能描述 | 模型架构 |
@@ -93,16 +97,22 @@ Step 4: 功能分析
 └──────────────────────┘    └──────────────────────┘
                 ↓
 Step 5: 疾病预测（可选）
-┌──────────────────────┐    ┌──────────────────────┐
-│  肝脏疾病预测         │    │    视觉问答          │
-│  (肝硬化/脂肪肝)     │    │  (MedGemma评估)      │
-└──────────────────────┘    └──────────────────────┘
+┌──────────────────────┐
+│  肝脏疾病预测         │
+│  (肝硬化/脂肪肝)     │
+└──────────────────────┘
                 ↓
 Step 6: 报告生成
 ┌──────────────────────┐    ┌──────────────────────┐
 │  EchoPrime报告生成    │    │  EchoGemma报告生成   │
 │  (结构化报告)        │    │  (智能报告)          │
 └──────────────────────┘    └──────────────────────┘
+                ↓
+Step 7: 智能问答（基于报告）
+┌──────────────────────┐
+│    视觉问答           │
+│  (MedGemma评估)      │
+└──────────────────────┘
 ```
 
 ## 🏗️ 项目结构
@@ -232,15 +242,16 @@ engine.run("age_prediction", target="Age", manifest_path="path/to/manifest.csv",
 # Step 11: 肝脏疾病预测
 engine.run("liver_disease_prediction", dataset="path/to/dataset", manifest_path="path/to/manifest.csv", label="cirrhosis")
 
-# Step 12: 视觉问答
-engine.run("visual_question_answering", dataset_dir="path/to/dataset", manifest_path="path/to/manifest.csv", output_path="output/vqa_results.json")
-
 # ========== 第六阶段：报告生成 ==========
-# Step 13: 报告生成（EchoPrime，支持中英文）
+# Step 12: 报告生成（EchoPrime，支持中英文）
 engine.run("report_generation_echoprime", dataset_dir="path/to/dicom/folder")
 
-# Step 14: 报告生成（EchoGemma，基于Gemma的智能报告）
+# Step 13: 报告生成（EchoGemma，基于Gemma的智能报告）
 engine.run("report_generation_gemma", dicom_dir="path/to/dicom/folder", save_path="output/report_gemma.txt")
+
+# ========== 第七阶段：智能问答（基于生成的报告） ==========
+# Step 14: 视觉问答（基于报告的多选题评估）
+engine.run("visual_question_answering", dataset_dir="path/to/dataset", manifest_path="path/to/manifest.csv", output_path="output/vqa_results.json")
 ```
 
 ## 📊 数据准备
