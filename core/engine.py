@@ -24,6 +24,7 @@ class CardiacEchoEngine:
             "modules/measurement",
             "modules/report_generation",
             "modules/landmark_detection",
+            "modules/age_prediction",
         ]
         for d in module_dirs:
             p = os.path.join(base, d)
@@ -44,6 +45,8 @@ class CardiacEchoEngine:
             "modules.measurement.doppler_mv_ea_measurement",
             "modules.measurement.doppler_tapse_measurement",
             "modules.report_generation.report_generation_echoprime",
+            "modules.report_generation.report_generation_gemma",
+            "modules.age_prediction.age_prediction",
 
 
             # "modules.measurement.plax_hypertrophy_inference",

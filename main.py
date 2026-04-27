@@ -35,6 +35,12 @@ if __name__ == "__main__":
     #### 心脏结构化报告生成
     # engine.run("report_generation_echoprime", dataset_dir="datasets/example_study_echoprime")
 
+    #### 脏结构化报告生成
+    engine.run("report_generation_gemma", dataset_dir="datasets/example_study_echoprime")
+
+    #### 超声年龄预测（视频）
+    # engine.run("age_prediction", target="Age", manifest_path="datasets/manifest_age.csv", path_column="video_path", weights_path="modules/age_prediction/weights/a2c_model_best_epoch_val_mae.pt", save_path="modules/age_prediction/outputs/predictions.csv")
+
 
 
     ###################### 计划开发功能（敬请期待） ######################
