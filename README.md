@@ -37,12 +37,13 @@
 | 模块 | 功能描述 | 模型架构 |
 |------|----------|----------|
 | **报告生成（EchoPrime）** | 基于EchoPrime架构，自动生成结构化超声报告（支持中英文） | MViT-V2 + ConvNeXt |
-| **报告生成（EchoGemma）** | 基于Gemma的超声智能报告生成 | Gemma |
+| **报告生成（EchoGemma）** | 基于Gemma的超声智能报告生成 | Gemma 2B/7B |
 
 #### 第六阶段：智能问答（报告后处理）
 | 模块 | 功能描述 | 模型架构 |
 |------|----------|----------|
-| **视觉问答** | 基于生成的报告和图像进行多选题评估（MedGemma 1.5） | MedGemma-1.5-4B |
+| **视觉问答（Echo专用）** | 超声领域专用视觉问答系统 | 多模态融合模型 |
+| **视觉问答（MedGemma）** | 基于生成的报告和图像进行多选题评估 | MedGemma-1.5-4B |
 
 #### 待启用功能
 | 模块 | 功能描述 | 模型架构 |
@@ -51,9 +52,10 @@
 | **疾病分类** | A4C视角下的淀粉样变性二分类 | R3D-18 |
 
 ### 🚧 计划开发功能
-
 - landmarks检测
 - 更多疾病分类模型
+- 多模态融合诊断
+- 实时视频流分析
 
 ## 🔄 推荐工作流程
 
@@ -133,7 +135,17 @@ EchoSky/
 │   │   ├── subcostal_quality_control.py      # Subcostal质量控制
 │   │   └── utils.py
 │   ├── segmentation/                # 左心室分割模块
-│   │   └── lv_segmentation_dynamic.py
+│   │   ├── lv_segmentation_dynamic.py
+│   │   └── echonet/
+│   │       ├── __init__.py
+│   │       ├── __main__.py
+│   │       ├── __version__.py
+│   │       ├── config.py
+│   │       └── utils/
+│   │           ├── __init__.py
+│   │           ├── segmentation.py
+│   │           ├── video.py
+│   │           └── video_original.py
 │   ├── measurement/                 # 自动测量模块
 │   │   ├── b_mode_linear_measurement.py      # B模式2D结构测量
 │   │   ├── doppler_measurement.py            # 多普勒峰值速度测量
@@ -151,10 +163,14 @@ EchoSky/
 │   │   ├── age_prediction.py                 # 超声年龄预测
 │   │   └── utils.py
 │   ├── visual_question_answering/   # 视觉问答模块
-│   │   └── visual_question_answering.py      # MedGemma VQA评估
+│   │   ├── visual_question_answering_echo.py      # Echo专用VQA实现
+│   │   └── visual_question_answering_medgemma.py  # MedGemma VQA评估
 │   ├── report_generation/           # 报告生成模块
 │   │   ├── report_generation_echoprime.py    # EchoPrime报告生成
 │   │   ├── report_generation_gemma.py        # EchoGemma报告生成
+│   │   ├── echogemma/
+│   │   │   ├── __init__.py
+│   │   │   └── echogemma.py                 # EchoGemma核心实现
 │   │   └── utils.py
 │   └── landmark_detection/          # 地标检测模块（待开发）
 ├── configs/
