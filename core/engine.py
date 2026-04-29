@@ -39,6 +39,7 @@ class CardiacEchoEngine:
             "modules.view_classification.subcostal_view_classification",
             "modules.quality_control.subcostal_quality_control",
             "modules.disease_classification.liver_disease_prediction",
+            "modules.disease_classification.ms_disease_prediction",
             "modules.segmentation.lv_segmentation_dynamic",
             "modules.functional_analysis.lv_ef_prediction_dynamic",
             "modules.measurement.b_mode_linear_measurement",
