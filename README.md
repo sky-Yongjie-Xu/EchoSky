@@ -276,29 +276,26 @@ engine.run("lv_ef_prediction_dynamic")
 # Step 9: 年龄预测
 engine.run("age_prediction", target="Age", manifest_path="path/to/manifest.csv", path_column="video_path", weights_path="path/to/weights.pt", save_path="output/predictions.csv")
 
-# Step 10: 全自动舒张功能评估 (端到端流水线)
-engine.run("automate_diastology", path="path/to/dicom/study", guideline_year=2025, save_path="output/diastology")
-
 # ========== 第五阶段：疾病预测（可选） ==========
-# Step 11: 肝脏疾病预测
+# Step 10: 肝脏疾病预测
 engine.run("liver_disease_prediction", dataset="path/to/dataset", manifest_path="path/to/manifest.csv", label="cirrhosis")
 
-# Step 12: 二尖瓣疾病预测（全自动DICOM推理）
+# Step 11: 二尖瓣疾病预测（全自动DICOM推理）
 engine.run("ms_disease_prediction", data_dir="path/to/dicom/studies", weights_dir="modules/disease_classification/weights", batch_size=4)
 
 # ========== 第六阶段：报告生成 ==========
-# Step 13: 报告生成（EchoPrime，支持中英文）
+# Step 12: 报告生成（EchoPrime，支持中英文）
 engine.run("report_generation_echoprime", dataset_dir="path/to/dicom/folder")
 
-# Step 14: 报告生成（EchoGemma，基于Gemma的智能报告）
+# Step 13: 报告生成（EchoGemma，基于Gemma的智能报告）
 engine.run("report_generation_gemma", dicom_dir="path/to/dicom/folder", save_path="output/report_gemma.txt")
 
 # ========== 第七阶段：智能问答（基于生成的报告） ==========
-# Step 15: 视觉问答（基于报告的多选题评估）
+# Step 14: 视觉问答（基于报告的多选题评估）
 engine.run("visual_question_answering", dataset_dir="path/to/dataset", manifest_path="path/to/manifest.csv", output_path="output/vqa_results.json")
 
 # ========== 第八阶段：自动化评估 ==========
-# Step 16: 全自动舒张功能评估
+# Step 15: 全自动舒张功能评估
 engine.run("automate_diastology", path="path/to/dicom/study", guideline_year=2025, save_path="output/diastology")
 ```
 
