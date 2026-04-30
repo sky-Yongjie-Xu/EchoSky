@@ -269,17 +269,14 @@ engine.run("doppler_measurement", model_weights="avvmax", folders="path/to/video
 # Step 7: 二尖瓣E/A测量
 engine.run("doppler_mv_ea_measurement", folders="path/to/videos", output_path_folders="output/mv_ea")
 
-# Step 8: 自动化评估
-engine.run("automate_diastology", path="path/to/dicom/study", guideline_year=2025, save_path="output/diastology")
-
 # ========== 第四阶段：功能分析 ==========
-# Step 9: 射血分数预测
+# Step 8: 射血分数预测
 engine.run("lv_ef_prediction_dynamic")
 
-# Step 10: 年龄预测
+# Step 9: 年龄预测
 engine.run("age_prediction", target="Age", manifest_path="path/to/manifest.csv", path_column="video_path", weights_path="path/to/weights.pt", save_path="output/predictions.csv")
 
-# Step 11: 全自动舒张功能评估 (端到端流水线)
+# Step 10: 全自动舒张功能评估 (端到端流水线)
 engine.run("automate_diastology", path="path/to/dicom/study", guideline_year=2025, save_path="output/diastology")
 
 # ========== 第五阶段：疾病预测（可选） ==========
@@ -290,18 +287,18 @@ engine.run("liver_disease_prediction", dataset="path/to/dataset", manifest_path=
 engine.run("ms_disease_prediction", data_dir="path/to/dicom/studies", weights_dir="modules/disease_classification/weights", batch_size=4)
 
 # ========== 第六阶段：报告生成 ==========
-# Step 12: 报告生成（EchoPrime，支持中英文）
+# Step 13: 报告生成（EchoPrime，支持中英文）
 engine.run("report_generation_echoprime", dataset_dir="path/to/dicom/folder")
 
-# Step 13: 报告生成（EchoGemma，基于Gemma的智能报告）
+# Step 14: 报告生成（EchoGemma，基于Gemma的智能报告）
 engine.run("report_generation_gemma", dicom_dir="path/to/dicom/folder", save_path="output/report_gemma.txt")
 
 # ========== 第七阶段：智能问答（基于生成的报告） ==========
-# Step 14: 视觉问答（基于报告的多选题评估）
+# Step 15: 视觉问答（基于报告的多选题评估）
 engine.run("visual_question_answering", dataset_dir="path/to/dataset", manifest_path="path/to/manifest.csv", output_path="output/vqa_results.json")
 
 # ========== 第八阶段：自动化评估 ==========
-# Step 15: 全自动舒张功能评估
+# Step 16: 全自动舒张功能评估
 engine.run("automate_diastology", path="path/to/dicom/study", guideline_year=2025, save_path="output/diastology")
 ```
 
