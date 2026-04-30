@@ -359,8 +359,7 @@ training:
 
 ## 🙏 致谢
 
-- **EchoNet-Dynamic**: 提供大规模超声心动图数据集
-- **EchoPrime**: 提供报告生成模型架构
+- **EchoNet**: 提供超声预训练模型：https://github.com/echonet
 - **PyTorch**: 深度学习框架
 
 ## 📧 联系方式
