@@ -276,11 +276,11 @@ engine.run("lv_ef_prediction_dynamic")
 # Step 9: 年龄预测
 engine.run("age_prediction", target="Age", manifest_path="path/to/manifest.csv", path_column="video_path", weights_path="path/to/weights.pt", save_path="output/predictions.csv")
 
-# ========== 第五阶段：疾病预测（可选） ==========
+# ========== 第五阶段：疾病预测 ==========
 # Step 10: 肝脏疾病预测
 engine.run("liver_disease_prediction", dataset="path/to/dataset", manifest_path="path/to/manifest.csv", label="cirrhosis")
 
-# Step 11: 二尖瓣疾病预测（全自动DICOM推理）
+# Step 11: 二尖瓣疾病预测
 engine.run("ms_disease_prediction", data_dir="path/to/dicom/studies", weights_dir="modules/disease_classification/weights", batch_size=4)
 
 # ========== 第六阶段：报告生成 ==========
