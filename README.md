@@ -6,16 +6,16 @@
 
 ### ✅ 已实现功能（按推荐工作流程排序）
 
-#### Step 1: 数据质控
+#### Step 1: 视角分类
 | 模块 | 功能描述 | 模型架构 |
 |------|----------|----------|
 | **Subcostal视图分类** | 肋下视图分类（高质量筛选 Step1） | R(2+1)D-18 |
-| **质量控制** | Subcostal图像质量控制（高质量筛选 Step2） | R(2+1)D-18 |
+| **视角分类** | 自动识别超声切面类型（A2C, A3C, A4C, A5C, PLAX, PSAX等11种） | ConvNeXt-Base |
 
-#### Step 2: 视角分类
+#### Step 2: 质量控制
 | 模块 | 功能描述 | 模型架构 |
 |------|----------|----------|
-| **视角分类** | 自动识别超声切面类型（A2C, A3C, A4C, A5C, PLAX, PSAX等11种） | ConvNeXt-Base |
+| **质量控制** | Subcostal图像质量控制（高质量筛选 Step2） | R(2+1)D-18 |
 
 #### Step 3: 分割与测量
 | 模块 | 功能描述 | 模型架构 |
@@ -51,6 +51,11 @@
 | **视觉问答（Echo专用）** | 超声领域专用视觉问答系统 | 多模态融合模型 |
 | **视觉问答（MedGemma）** | 基于生成的报告和图像进行多选题评估 | MedGemma-1.5-4B |
 
+#### Step 8: 自动化评估
+| 模块 | 功能描述 | 模型架构 |
+|------|----------|----------|
+| **全自动舒张功能评估** | 端到端自动化心脏舒张功能评估，按照ASE指南自动分级诊断 | 多模型集成流水线 |
+
 #### 待启用功能
 | 模块 | 功能描述 | 模型架构 |
 |------|----------|----------|
@@ -70,16 +75,16 @@
 │                        超声数据分析工作流程                           │
 └─────────────────────────────────────────────────────────────────────┘
 
-Step 1: 数据质控
+Step 1: 视角分类
 ┌──────────────────────┐    ┌──────────────────────┐
-│  Subcostal视图分类    │ -> │    质量控制          │
-│  (筛选正确视图)       │    │  (筛选高质量图像)     │
+│  Subcostal视图分类    │ -> │    视角分类          │
+│  (筛选正确视图)       │    │  (识别切面类型)     │
 └──────────────────────┘    └──────────────────────┘
                 ↓
-Step 2: 视角分类
+Step 2: 质量控制
 ┌──────────────────────┐
-│    视角分类           │
-│  (识别切面类型)       │
+│    质量控制           │
+│  (筛选高质量图像)       │
 └──────────────────────┘
                 ↓
 Step 3: 分割与测量
@@ -126,6 +131,12 @@ Step 7: 智能问答（基于报告）
 │    视觉问答           │
 │  (MedGemma评估)      │
 └──────────────────────┘
+                ↓
+Step 8: 自动化评估
+┌──────────────────────────────────────────────────┐
+│          全自动舒张功能评估                      │
+│  端到端自动化诊断 + ASE指南分级(2016/2025)       │
+└──────────────────────────────────────────────────┘
 ```
 
 ## 🏗️ 项目结构
@@ -264,8 +275,8 @@ engine.run("doppler_measurement", model_weights="avvmax", folders="path/to/video
 # Step 7: 二尖瓣E/A测量
 engine.run("doppler_mv_ea_measurement", folders="path/to/videos", output_path_folders="output/mv_ea")
 
-# Step 8: TAPSE测量
-engine.run("doppler_tapse_measurement", folders="path/to/videos", output_path_folders="output/tapse")
+# Step 8: 自动化评估
+engine.run("automate_diastology", path="path/to/dicom/study", guideline_year=2025, save_path="output/diastology")
 
 # ========== 第四阶段：功能分析 ==========
 # Step 9: 射血分数预测
@@ -294,6 +305,10 @@ engine.run("report_generation_gemma", dicom_dir="path/to/dicom/folder", save_pat
 # ========== 第七阶段：智能问答（基于生成的报告） ==========
 # Step 14: 视觉问答（基于报告的多选题评估）
 engine.run("visual_question_answering", dataset_dir="path/to/dataset", manifest_path="path/to/manifest.csv", output_path="output/vqa_results.json")
+
+# ========== 第八阶段：自动化评估 ==========
+# Step 15: 全自动舒张功能评估
+engine.run("automate_diastology", path="path/to/dicom/study", guideline_year=2025, save_path="output/diastology")
 ```
 
 ## 📊 数据准备
