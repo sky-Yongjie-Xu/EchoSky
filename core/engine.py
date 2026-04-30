@@ -26,6 +26,7 @@ class CardiacEchoEngine:
             "modules/landmark_detection",
             "modules/age_prediction",
             "modules/visual_question_answering",
+            "modules/automate_diastology",
         ]
         for d in module_dirs:
             p = os.path.join(base, d)
@@ -51,6 +52,7 @@ class CardiacEchoEngine:
             "modules.age_prediction.age_prediction",
             "modules.visual_question_answering.visual_question_answering_medgemma",
             "modules.visual_question_answering.visual_question_answering_echo",
+            "modules.automate_diastology.automate_diastology",
 
 
             # "modules.measurement.plax_hypertrophy_inference",

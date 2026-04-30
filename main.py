@@ -19,7 +19,7 @@ if __name__ == "__main__":
     # engine.run("liver_disease_prediction", dataset="datasets/example_study_dynamic", manifest_path="datasets/manifest.csv", label="cirrhosis")
 
     #### ms_disease_prediction
-    engine.run("ms_disease_prediction", data_dir="datasets/example_study_ms/study_001", weights_dir="modules/disease_classification/weights", batch_size=4)
+    # engine.run("ms_disease_prediction", data_dir="datasets/example_study_ms/study_001", weights_dir="modules/disease_classification/weights", batch_size=4)
 
     #### 左心室 分割
     # engine.run("lv_segmentation_dynamic", save_video=True)
@@ -47,6 +47,9 @@ if __name__ == "__main__":
     #### 视觉问答
     # engine.run("visual_question_answering_medgemma", media="datasets/example_study_dynamic/0X1A0A263B22CCD966.avi")
     # engine.run("visual_question_answering_echo", media="datasets/example_study_dynamic/0X1A0A263B22CCD966.avi")
+
+    #### 自动化检查流程
+    engine.run("automate_diastology", path="/home/xuyongjie/xuyongjie/EchoSky/datasets/example_study_echoprime", guideline_year=2025, save_path="/home/xuyongjie/xuyongjie/EchoSky/modules/automate_diastology/outputs/diastology_report.txt")
 
 
 
